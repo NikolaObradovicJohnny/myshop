@@ -4,12 +4,19 @@ from django.db import models
 
 class Album(models.Model):
     name = models.CharField(max_length=140,null=False)
-    artist_name = models.CharField(max_length=140,null=False)
+    artist = models.ForeignKey('Artist', related_name='artist', on_delete=models.CASCADE,null=False)
     published_year = models.IntegerField()
-    genre = models.ForeignKey('Genre', related_name='genre', on_delete=models.CASCADE)
+    genre = models.ForeignKey('Genre', related_name='genre', on_delete=models.CASCADE,null=False)
 
     def __str__(self):
-        return self.artist_name + ' - ' + self.name + '('+str(self.published_year)+')'
+        return self.artist.name + ' - ' + self.name + '('+str(self.published_year)+')'
+
+class Artist(models.Model):
+    name = models.CharField(max_length=140,null=False)
+    biography = models.TextField()
+
+    def __str__(self):
+        return self.name
 
 class Song(models.Model):
     name = models.CharField(max_length=140,null=False)
