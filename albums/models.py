@@ -9,7 +9,7 @@ class Album(models.Model):
     genre = models.ForeignKey('Genre', related_name='genre', on_delete=models.CASCADE,null=False)
 
     def __str__(self):
-        return self.artist.name + ' - ' + self.name + '('+str(self.published_year)+')'
+        return "%s - %s (%s)" % (self.artist.name, self.name, str(self.published_year))
 
 class Artist(models.Model):
     name = models.CharField(max_length=140,null=False)
@@ -24,7 +24,7 @@ class Song(models.Model):
     album = models.ForeignKey('Album', related_name='album',on_delete=models.CASCADE)
 
     def __str__(self):
-        return self.album.name + ' - ' + self.name
+        return "s% - s%" (self.album.name, self.name)
 
 class Genre(models.Model):
     name = models.CharField(max_length=140,null=False)
