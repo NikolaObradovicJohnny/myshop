@@ -1,28 +1,30 @@
-from rest_framework import routers, serializers, viewsets
+from rest_framework import serializers, viewsets
 from .models import Album, Artist, Song, Genre
 
-class SongSerializer(serializers.ModelSerializer):
+class SongSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Song
-        fields = ('id','name', 'duration')
-
-class ArtistSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Artist
-        fields = ('id','name', 'biography')
+        fields = ('id','name', 'duration','album')
 
 class GenreSerializer(serializers.ModelSerializer):
     class Meta:
         model = Genre
         fields = ('id','name')
 
-# Serializers define the API representation.
 class AlbumSerializer(serializers.HyperlinkedModelSerializer):
     songs = SongSerializer(many=True, read_only=True)
 
     class Meta:
         model = Album
         fields = ('id','name', 'artist', 'published_year','genre','songs')
+
+# Serializers define the API representation.
+class ArtistSerializer(serializers.HyperlinkedModelSerializer):
+    albums = AlbumSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = Artist
+        fields = ('id','name', 'biography','albums')
 
 # ViewSets define the view behavior.
 class SongViewSet(viewsets.ReadOnlyModelViewSet):

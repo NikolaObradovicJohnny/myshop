@@ -20,6 +20,8 @@ from django.contrib.auth.models import User
 from rest_framework import routers, serializers, viewsets
 from albums.serializers import AlbumViewSet, SongViewSet, GenreViewSet as MusicGenreViewSet, ArtistViewSet
 from books.serializers import BookViewSet, AuthorViewSet, GenreViewSet as BookGenreViewSet
+from albums import views as albumViews
+from books import views as bookViews
 
 # Serializers define the API representation.
 class UserSerializer(serializers.HyperlinkedModelSerializer):
@@ -35,14 +37,13 @@ class UserViewSet(viewsets.ReadOnlyModelViewSet):
 # Routers provide an easy way of automatically determining the URL conf.
 router = routers.DefaultRouter()
 router.register(r'users', UserViewSet)
-router.register(r'books', BookViewSet)
+router.register(r'artists', ArtistViewSet)
 router.register(r'music-genres', MusicGenreViewSet)
-router.register(r'authors', AuthorViewSet)
 router.register(r'albums', AlbumViewSet)
 router.register(r'songs', SongViewSet)
+router.register(r'books', BookViewSet)
+router.register(r'authors', AuthorViewSet)
 router.register(r'book-genres', BookGenreViewSet)
-router.register(r'artists', ArtistViewSet)
-
 
 # Wire up our API using automatic URL routing.
 # Additionally, we include login URLs for the browsable API.
@@ -50,4 +51,22 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     url(r'^api/', include(router.urls)),
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
+
+    # Albums Rest Views
+    url(r'^albums/$', albumViews.AlbumList.as_view()),
+    url(r'^albums/(?P<pk>[0-9]+)/$', albumViews.AlbumDetail.as_view()),
+    url(r'^artists/$', albumViews.ArtistList.as_view()),
+    url(r'^artists/(?P<pk>[0-9]+)/$', albumViews.ArtistDetail.as_view()),
+    url(r'^songs/$', albumViews.SongList.as_view()),
+    url(r'^songs/(?P<pk>[0-9]+)/$', albumViews.SongDetail.as_view()),
+    url(r'^music-genres/$', albumViews.GenreList.as_view()),
+    url(r'^music-genres/(?P<pk>[0-9]+)/$', albumViews.GenreDetail.as_view()),
+
+    # Books Rest Views
+    url(r'^books/$', bookViews.BookList.as_view()),
+    url(r'^books/(?P<pk>[0-9]+)/$', bookViews.BookDetail.as_view()),
+    url(r'^authors/$', bookViews.AuthorList.as_view()),
+    url(r'^authors/(?P<pk>[0-9]+)/$', bookViews.AuthorDetail.as_view()),
+    url(r'^book-genres/$', bookViews.GenreList.as_view()),
+    url(r'^book-genres/(?P<pk>[0-9]+)/$', bookViews.GenreDetail.as_view()),
 ]
