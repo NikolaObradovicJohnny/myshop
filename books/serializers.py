@@ -1,12 +1,12 @@
 from rest_framework import serializers, viewsets
 from .models import Book, Author, Genre
 
-class AuthorSerializer(serializers.ModelSerializer):
+class AuthorSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Author
-        fields = ('id', 'first_name', 'last_name', 'biography')
+        fields = ('id', 'first_name', 'last_name', 'date_of_birth', 'biography')
 
-class GenreSerializer(serializers.ModelSerializer):
+class GenreSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Genre
         fields = ('id','name')
@@ -15,7 +15,7 @@ class GenreSerializer(serializers.ModelSerializer):
 class BookSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Book
-        fields = ('id','title', 'author', 'published_year','genre')
+        fields = ('id','title', 'author', 'description', 'published_year','genre')
 
 # ViewSets define the view behavior.
 class GenreViewSet(viewsets.ReadOnlyModelViewSet):
