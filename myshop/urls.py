@@ -18,7 +18,7 @@ from django.urls import path
 from django.conf.urls import url, include
 from django.contrib.auth.models import User
 from rest_framework import routers, serializers, viewsets
-
+from books.serializers import BookViewSet, AuthorViewSet, GenreViewSet
 
 # Serializers define the API representation.
 class UserSerializer(serializers.HyperlinkedModelSerializer):
@@ -31,26 +31,18 @@ class UserViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
 
-# # Serializers define the API representation.
-# class AlbumSerializer(serializers.HyperlinkedModelSerializer):
-#     class Meta:
-#         model = Album
-#         fields = ('name', 'artist_name', 'published_year')
-#
-# # ViewSets define the view behavior.
-# class AlbumViewSet(viewsets.ReadOnlyModelViewSet):
-#     queryset = Album.objects.all()
-#     serializer_class = AlbumSerializer
-
 # Routers provide an easy way of automatically determining the URL conf.
 router = routers.DefaultRouter()
 router.register(r'users', UserViewSet)
-# router.register(r'albums', AlbumViewSet)
+router.register(r'books', BookViewSet)
+router.register(r'genres', GenreViewSet)
+router.register(r'authors', AuthorViewSet)
+
 
 # Wire up our API using automatic URL routing.
 # Additionally, we include login URLs for the browsable API.
 urlpatterns = [
     path('admin/', admin.site.urls),
-    url(r'^', include(router.urls)),
+    url(r'^api/', include(router.urls)),
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
 ]
