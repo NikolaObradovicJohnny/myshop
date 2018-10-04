@@ -18,7 +18,8 @@ from django.urls import path
 from django.conf.urls import url, include
 from django.contrib.auth.models import User
 from rest_framework import routers, serializers, viewsets
-from books.serializers import BookViewSet, AuthorViewSet, GenreViewSet
+from albums.serializers import AlbumViewSet, SongViewSet, GenreViewSet as MusicGenreViewSet, ArtistViewSet
+from books.serializers import BookViewSet, AuthorViewSet, GenreViewSet as BookGenreViewSet
 
 # Serializers define the API representation.
 class UserSerializer(serializers.HyperlinkedModelSerializer):
@@ -35,8 +36,12 @@ class UserViewSet(viewsets.ReadOnlyModelViewSet):
 router = routers.DefaultRouter()
 router.register(r'users', UserViewSet)
 router.register(r'books', BookViewSet)
-router.register(r'genres', GenreViewSet)
+router.register(r'music-genres', MusicGenreViewSet)
 router.register(r'authors', AuthorViewSet)
+router.register(r'albums', AlbumViewSet)
+router.register(r'songs', SongViewSet)
+router.register(r'book-genres', BookGenreViewSet)
+router.register(r'artists', ArtistViewSet)
 
 
 # Wire up our API using automatic URL routing.
