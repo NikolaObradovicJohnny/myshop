@@ -24,7 +24,7 @@ class Song(models.Model):
     album = models.ForeignKey('Album', related_name='album',on_delete=models.CASCADE)
 
     def __str__(self):
-        return "s% - s%" (self.album.name, self.name)
+        return "%s - %s" % (self.album.name, self.name)
 
 class Genre(models.Model):
     name = models.CharField(max_length=140,null=False)
